@@ -19,19 +19,21 @@ a{
 }
 
 #albumsList{
-	width:38%;
+	width:48%;
 	float: left;
 	display: inline-block;
 	background-color:lightcyan;
 	border: 3px solid #000;
+	border-radius: 8px;
 }
 
 #pictures{
 	float: right;
-	width:59%;
+	width:49%;
 	display: inline-block;
 	background-color:#eed8e7;
 	border: 3px solid #000;
+	border-radius: 8px;
 }
 
 img{

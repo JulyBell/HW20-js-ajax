@@ -7,40 +7,48 @@ let photosLink = 'https://jsonplaceholder.typicode.com/photos?albumId=';
 let fullLink;
 
 
-function initFetch(fullLink){
-	fetch(fullLink).then((data) => {
-		console.log(data);
-		return data.json();
-	}).then((data) => {
-		photosArea.innerHTML = data.map((picture) => {
-			let img = `<img src=${picture.url}/>`;
-			return img;
-		})
-	})	
+async function runFetch(fullLink){
+	let photosArr = await fetch(fullLink);
+	let pictures = await photosArr.json();
+	photosArea.innerHTML = pictures.map((picture) => {
+	let img = `<img src=${picture.url}/>`;
+	return img;
+	})
 }
 
-let albums = fetch('https://jsonplaceholder.typicode.com/albums').then((data)=>{
-  console.log(data);
-  return data.json();
-}).then((data) =>{
-	ul.innerHTML = data.map( (album) => {	
+function mapAlbum(data){
+	let list = data.map( (album) => {	
 		li =`<li>${album.title}</li>`;
 		return li;
 	}).join('');
 
-	initFetch('https://jsonplaceholder.typicode.com/photos?albumId=1');
+	return list;
+}
+
+function chooseAlbum(event, data){
+	let element = data.find((album)=> album.title === event.target.textContent);
+	albumIdx = element.id;
+	console.log(albumIdx);
+	fullLink = photosLink + albumIdx;
+	return fullLink;
+}
+
+fetch('https://jsonplaceholder.typicode.com/albums').then((data)=>{
+  return data.json();
+}).then((data) =>{
+	ul.innerHTML = mapAlbum(data);
+
+	runFetch('https://jsonplaceholder.typicode.com/photos?albumId=1');
 
 	ul.addEventListener('click', (e) => {
 		e.preventDefault();
-		let element = data.find((album)=> album.title === e.target.textContent);
-		albumIdx = element.id;
-		console.log(albumIdx);
-		fullLink = photosLink + albumIdx;
-
-		initFetch(fullLink);
+		if(e.target.tagName === 'LI'){
+			
+			chooseAlbum(e, data);
+			runFetch(fullLink);
+		}
 
 	})
-	
-  console.log(data);
+
 })
 
