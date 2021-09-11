@@ -13,7 +13,7 @@ async function runFetch(fullLink){
 	photosArea.innerHTML = pictures.map((picture) => {
 	let img = `<img src=${picture.url}/>`;
 	return img;
-	})
+	}).join('');
 }
 
 function mapAlbum(data){
@@ -43,7 +43,7 @@ fetch('https://jsonplaceholder.typicode.com/albums').then((data)=>{
 	ul.addEventListener('click', (e) => {
 		e.preventDefault();
 		if(e.target.tagName === 'LI'){
-			
+
 			chooseAlbum(e, data);
 			runFetch(fullLink);
 		}
